@@ -1,0 +1,14 @@
+github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8 h1:DujepqpGd1hyOd7aW59XpK7Qymp8iy83xq74fLr21is=
+github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8/go.mod h1:xkRDCp4j0OGD1HRkm4kmhM+pmpv3AKq5SU7GMg4oO/Q=
+github.com/julienschmidt/httprouter v1.3.0 h1:U0609e9tgbseu3rBINet9P48AI/D3oJs4dN7jwJOQ1U=
+github.com/julienschmidt/httprouter v1.3.0/go.mod h1:JR6WtHb+2LUe8TCKY3cZOxFyyO8IZAc4RVcycCCAKdM=
+github.com/klebervirgilio/vue-crud-app-with-golang v0.0.0-20181007122050-8c8603909d12 h1:P+oEOlr4NqB3V3NYJnpcB1uc8XdvagDT374Kt9A1Me8=
+github.com/klebervirgilio/vue-crud-app-with-golang v0.0.0-20181007122050-8c8603909d12/go.mod h1:ZRkkpBYrW56V/JZHO8VSb14U78nlNKaxmsXYH81D/kM=
+github.com/lestrrat-go/jwx v0.9.1 h1:yuDzdMCxjiY2oItdWPX3wM/blQ3kJrBmp3kcec7NNEE=
+github.com/lestrrat-go/jwx v0.9.1/go.mod h1:iEoxlYfZjvoGpuWwxUz+eR5e6KTJGsaRcy/YNA/UnBk=
+github.com/okta/okta-jwt-verifier-golang v0.1.0 h1:B1rrrBSz33yJnyjYWERgITKSYSHNh9OLwm6asNYCqq8=
+github.com/okta/okta-jwt-verifier-golang v0.1.0/go.mod h1:/VV2N3Wj4lNedWkv2vNlXHoIOHE1V2RnQhMDMGKscwM=
+github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
+github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
+github.com/rs/cors v1.7.0 h1:+88SsELBHx5r+hZ8TCkggzSstaWNbDvThkVK8H6f9ik=
+github.com/rs/cors v1.7.0/go.mod h1:gFx+x8UowdsKA9AchylcLynDq+nNFfI8FkUZdN/jGCU=
