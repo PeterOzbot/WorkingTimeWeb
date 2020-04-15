@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 	"net/http"
-	web "workingtimeweb/server/http"
-	"workingtimeweb/server/storage"
+	web "workingtimeweb/server/host/http"
+	"workingtimeweb/server/host/storage"
 )
 
 const port = ":4444"

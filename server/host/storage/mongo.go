@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"workingtimeweb/server/core"
+	"workingtimeweb/server/host/core"
 
 	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"

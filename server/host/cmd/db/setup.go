@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	mongodb "workingtimeweb/server/storage"
+	mongodb "workingtimeweb/server/host/storage"
 
 	"github.com/globalsign/mgo"
 )

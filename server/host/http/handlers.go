@@ -5,8 +5,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
-	"workingtimeweb/server/core"
-	"workingtimeweb/server/kudo"
+	"workingtimeweb/server/host/core"
+	"workingtimeweb/server/host/kudo"
 
 	"github.com/julienschmidt/httprouter"
 )
