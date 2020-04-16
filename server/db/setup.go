@@ -2,14 +2,14 @@ package main
 
 import (
 	"log"
-	mongodb "workingtimeweb/server/host/storage"
+	"workingtimeweb/server/config"
 
 	"github.com/globalsign/mgo"
 )
 
 func main() {
 	var err error
-	mongoURL := mongodb.MongoUrl //os.Getenv("MONGO_URL")
+	mongoURL := config.Configuration().MongoURL
 	if mongoURL == "" {
 		log.Fatal("MongoUrl not provided")
 	}

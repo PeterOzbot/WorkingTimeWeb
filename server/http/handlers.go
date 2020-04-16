@@ -1,12 +1,14 @@
 package http
 
+//TODO:PTERO review this
+
 import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"strconv"
-	"workingtimeweb/server/host/core"
-	"workingtimeweb/server/host/kudo"
+	"workingtimeweb/server/core"
+	workingDay "workingtimeweb/server/workingday"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -24,53 +26,53 @@ func New(repo core.Repository) Service {
 	}
 
 	router := httprouter.New()
-	router.GET("/kudos", service.Index)
-	router.POST("/kudos", service.Create)
-	router.DELETE("/kudos/:id", service.Delete)
-	router.PUT("/kudos/:id", service.Update)
+	router.GET("/workingDays", service.Index)
+	router.POST("/workingDays", service.Create)
+	router.DELETE("/workingDays/:id", service.Delete)
+	router.PUT("/workingDays/:id", service.Update)
 
 	service.Router = UseMiddlewares(router)
 
 	return service
 }
 
-// Index : loads all kudos
+// Index : loads all workingDays
 func (s Service) Index(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	service := kudo.NewService(s.repo, r.Context().Value("userId").(string))
-	kudos, err := service.GetKudos()
+	service := workingDay.NewService(s.repo, r.Context().Value("userId").(string))
+	workingDays, err := service.GetWorkingDays()
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(kudos)
+	json.NewEncoder(w).Encode(workingDays)
 }
 
 func (s Service) Create(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	service := kudo.NewService(s.repo, r.Context().Value("userId").(string))
+	service := workingDay.NewService(s.repo, r.Context().Value("userId").(string))
 	payload, _ := ioutil.ReadAll(r.Body)
 
-	githubRepo := kudo.GitHubRepo{}
+	githubRepo := workingDay.GitHubRepo{}
 	json.Unmarshal(payload, &githubRepo)
 
-	kudo, err := service.CreateKudoFor(githubRepo)
+	workingDay, err := service.CreateWorkingDayFor(githubRepo)
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(kudo)
+	json.NewEncoder(w).Encode(workingDay)
 }
 
 func (s Service) Delete(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	service := kudo.NewService(s.repo, r.Context().Value("userId").(string))
+	service := workingDay.NewService(s.repo, r.Context().Value("userId").(string))
 
 	repoID, _ := strconv.Atoi(params.ByName("id"))
-	githubRepo := kudo.GitHubRepo{RepoID: int64(repoID)}
+	githubRepo := workingDay.GitHubRepo{RepoID: int64(repoID)}
 
-	_, err := service.RemoveKudo(githubRepo)
+	_, err := service.RemoveWorkingDay(githubRepo)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -79,17 +81,17 @@ func (s Service) Delete(w http.ResponseWriter, r *http.Request, params httproute
 }
 
 func (s Service) Update(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	service := kudo.NewService(s.repo, r.Context().Value("userId").(string))
+	service := workingDay.NewService(s.repo, r.Context().Value("userId").(string))
 	payload, _ := ioutil.ReadAll(r.Body)
 
-	githubRepo := kudo.GitHubRepo{}
+	githubRepo := workingDay.GitHubRepo{}
 	json.Unmarshal(payload, &githubRepo)
 
-	kudo, err := service.UpdateKudoWith(githubRepo)
+	workingDay, err := service.UpdateWorkingDayWith(githubRepo)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(kudo)
+	json.NewEncoder(w).Encode(workingDay)
 }

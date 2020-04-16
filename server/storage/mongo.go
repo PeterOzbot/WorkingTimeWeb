@@ -3,83 +3,77 @@ package storage
 import (
 	"log"
 	"os"
-
-	"workingtimeweb/server/host/core"
+	"workingtimeweb/server/config"
+	"workingtimeweb/server/core"
 
 	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
 )
 
-const collectionName = "kudos"
-const MongoUrl = "mongodb://mongo_user:mongo_secret@0.0.0.0:27017"
+const collectionName = "workingDays"
 
-//"mongodb://mongo_user:mongo_secret@0.0.0.0:27017/kudos PORT=:4444"
-
-func GetCollectionName() string {
-	return collectionName
-}
-
+// MongoRepository : Repository for accessing the database.
 type MongoRepository struct {
 	logger  *log.Logger
 	session *mgo.Session
 }
 
-// Find fetches a kudo from mongo according to the query criteria provided.
-func (r MongoRepository) Find(repoID string) (*core.Kudo, error) {
+// Find fetches a WorkingDay from mongo according to the query criteria provided.
+func (r MongoRepository) Find(repoID string) (*core.WorkingDay, error) {
 	session := r.session.Copy()
 	defer session.Close()
 	coll := session.DB("").C(collectionName)
 
-	var kudo core.Kudo
-	err := coll.Find(bson.M{"repoId": repoID, "userId": kudo.UserID}).One(&kudo)
+	var workingDay core.WorkingDay
+	err := coll.Find(bson.M{"repoId": repoID, "userId": workingDay.UserID}).One(&workingDay)
 	if err != nil {
 		r.logger.Printf("error: %v\n", err)
 		return nil, err
 	}
-	return &kudo, nil
+	return &workingDay, nil
 }
 
-// FindAll fetches all kudos from the database. YES.. ALL! be careful.
-func (r MongoRepository) FindAll(selector map[string]interface{}) ([]*core.Kudo, error) {
+// FindAll fetches all workingDays from the database. YES.. ALL! be careful.
+func (r MongoRepository) FindAll(selector map[string]interface{}) ([]*core.WorkingDay, error) {
 	session := r.session.Copy()
 	defer session.Close()
 	coll := session.DB("").C(collectionName)
 
-	var kudos []*core.Kudo
-	err := coll.Find(selector).All(&kudos)
+	var workingDays []*core.WorkingDay
+	err := coll.Find(selector).All(&workingDays)
 	if err != nil {
 		r.logger.Printf("error: %v\n", err)
 		return nil, err
 	}
-	return kudos, nil
+	return workingDays, nil
 }
 
-// Delete deletes a kudo from mongo according to the query criteria provided.
-func (r MongoRepository) Delete(kudo *core.Kudo) error {
+// Delete deletes a workingDay from mongo according to the query criteria provided.
+func (r MongoRepository) Delete(workingDay *core.WorkingDay) error {
 	session := r.session.Copy()
 	defer session.Close()
 	coll := session.DB("").C(collectionName)
 
-	return coll.Remove(bson.M{"repoId": kudo.RepoID, "userId": kudo.UserID})
+	return coll.Remove(bson.M{"repoId": workingDay.RepoID, "userId": workingDay.UserID})
 }
 
-// Update updates an kudo.
-func (r MongoRepository) Update(kudo *core.Kudo) error {
+// Update updates an workingDay.
+func (r MongoRepository) Update(workingDay *core.WorkingDay) error {
 	session := r.session.Copy()
 	defer session.Close()
 	coll := session.DB("").C(collectionName)
 
-	return coll.Update(bson.M{"repoId": kudo.RepoID, "userId": kudo.UserID}, kudo)
+	return coll.Update(bson.M{"repoId": workingDay.RepoID, "userId": workingDay.UserID}, workingDay)
 }
 
-// Create kudos in the database.
-func (r MongoRepository) Create(kudos ...*core.Kudo) error {
+// Create workingDays in the database.
+func (r MongoRepository) Create(workingDays ...*core.WorkingDay) error {
 	session := r.session.Copy()
 	defer session.Close()
 	coll := session.DB("").C(collectionName)
 
-	for _, kudo := range kudos {
-		_, err := coll.Upsert(bson.M{"repoId": kudo.RepoID, "userId": kudo.UserID}, kudo)
+	for _, workingDay := range workingDays {
+		_, err := coll.Upsert(bson.M{"repoId": workingDay.RepoID, "userId": workingDay.UserID}, workingDay)
 		if err != nil {
 			return err
 		}
@@ -98,7 +92,7 @@ func (r MongoRepository) Count() (int, error) {
 
 // NewMongoSession dials mongodb and creates a session.
 func newMongoSession() (*mgo.Session, error) {
-	mongoURL := MongoUrl //os.Getenv("MONGO_URL")
+	mongoURL := config.Configuration().MongoURL
 	if mongoURL == "" {
 		log.Fatal("MongoUrl not provided")
 	}
