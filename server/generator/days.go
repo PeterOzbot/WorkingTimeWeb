@@ -2,17 +2,16 @@ package generator
 
 import (
 	"time"
-	"workingtimeweb/server/core"
 )
 
-// RandomizeDays : Randomizes working days. Result is array with true if day should have working hours.
-func RandomizeDays(hours []int, desiredDate time.Time) []*core.WorkingDay {
+// Randomizes working days. Result is array with true if day should have working hours.
+func randomizeDays(hours []int, desiredDate time.Time) []*WorkingDay {
 
 	// get available days
 	var availableDays int = time.Date(desiredDate.Year(), desiredDate.Month()+1, 0, 0, 0, 0, 0, time.UTC).Day()
 
 	// initialize array of working days
-	var days []*core.WorkingDay = make([]*core.WorkingDay, availableDays)
+	var days []*WorkingDay = make([]*WorkingDay, availableDays)
 
 	// initialize workign date in case the input is not first of the month
 	workingDate := time.Date(desiredDate.Year(), desiredDate.Month(), 1, 0, 0, 0, 0, time.UTC)
@@ -28,7 +27,7 @@ func RandomizeDays(hours []int, desiredDate time.Time) []*core.WorkingDay {
 		}
 
 		// create the working day struct
-		days[dayIndex] = &core.WorkingDay{
+		days[dayIndex] = &WorkingDay{
 			Date:      workingDate,
 			IsWorking: isWorking,
 		}

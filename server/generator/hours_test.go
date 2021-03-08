@@ -13,7 +13,7 @@ func Test_Randomize_Ordered(t *testing.T) {
 
 	result := [3]int{0, 0, 0}
 	for runIndex := 0; runIndex < 10000; runIndex++ {
-		currentResult := Randomize(choiceWeight[:], sumWeight, numChoices)
+		currentResult := randomize(choiceWeight[:], sumWeight, numChoices)
 		result[currentResult]++
 	}
 
@@ -35,7 +35,7 @@ func Test_Randomize_Unordered(t *testing.T) {
 
 	result := [3]int{0, 0, 0}
 	for runIndex := 0; runIndex < 10000; runIndex++ {
-		currentResult := Randomize(choiceWeight[:], sumWeight, numChoices)
+		currentResult := randomize(choiceWeight[:], sumWeight, numChoices)
 		result[currentResult]++
 	}
 
@@ -58,7 +58,7 @@ func Test_Randomize_Hours(t *testing.T) {
 
 	result := [10]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 	for runIndex := 0; runIndex < 10000; runIndex++ {
-		currentResult := Randomize(choiceWeight[:], sumWeight, numChoices)
+		currentResult := randomize(choiceWeight[:], sumWeight, numChoices)
 		result[currentResult]++
 	}
 
@@ -99,7 +99,7 @@ func Test_Reduce_ZeroDifference(t *testing.T) {
 	var hours []int = []int{5, 1, 7, 10}
 	var difference int = 0
 
-	result := Reduce(hours, difference)
+	result := reduce(hours, difference)
 
 	if len(result) != len(hours) {
 		t.Errorf("result and hours do not match in length")
@@ -118,7 +118,7 @@ func Test_Reduce_Simple(t *testing.T) {
 	var hours []int = []int{6, 1, 7, 10, 2}
 	var difference int = 1
 
-	result := Reduce(hours, difference)
+	result := reduce(hours, difference)
 
 	if len(result) != len(hours)-1 {
 		t.Errorf("input hours should be reduced by one")

@@ -5,15 +5,15 @@ import "testing"
 // Test_TotalHours : Tests if total hours generated are the same as requested.
 func Test_TotalHours(t *testing.T) {
 
-	var targetHours int = 37
-	result := Generate(targetHours)
+	request := &Request{TotalHours: 37}
+	result := Generate(request)
 
 	var generatedHours int = 0
 	for _, workingDay := range result {
 		generatedHours += workingDay.Hours
 	}
 
-	if generatedHours != targetHours {
+	if generatedHours != request.TotalHours {
 		t.Errorf("Generated hours not the same as target hours.")
 	}
 }
@@ -21,8 +21,8 @@ func Test_TotalHours(t *testing.T) {
 // Test_TotalHours : Tests if generated working days have hours more than 0 if the day is working.
 func Test_WorkingDasHaveHours(t *testing.T) {
 
-	var targetHours int = 37
-	result := Generate(targetHours)
+	request := &Request{TotalHours: 37}
+	result := Generate(request)
 
 	for _, workingDay := range result {
 		if workingDay.IsWorking && workingDay.Hours <= 0 {

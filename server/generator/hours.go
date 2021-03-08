@@ -5,18 +5,18 @@ import (
 	"workingtimeweb/server/core"
 )
 
-// GenerateHours : Generates list fo days with random hours.
-func GenerateHours(totalHours int) []int {
+// Generates list for days with random hours.
+func generateHours(totalHours int) []int {
 
 	// index 0 is for 1h, while index 9 is for 10h
-	choiceWeight := [10]int{1, 2, 3, 4, 5, 5, 4, 3, 2, 1}
-	sumWeight := 30
+	choiceWeight := [10]int{0, 1, 2, 4, 5, 5, 6, 8, 3, 1}
+	sumWeight := 35
 	numChoices := 10
 
 	// randomize hours until all are used
 	var hours []int
 	for totalHours > 0 {
-		var workingHours int = Randomize(choiceWeight[:], sumWeight, numChoices)
+		var workingHours int = randomize(choiceWeight[:], sumWeight, numChoices)
 		// index 0 is for 1h, while index 9 is for 10h so it should be incremented by 1
 		workingHours++
 
@@ -28,8 +28,8 @@ func GenerateHours(totalHours int) []int {
 	return hours
 }
 
-// Randomize : Calculates weighted random from list of weights. Result is selected index. Caller should handle which weight index is the actual selection value.
-func Randomize(choiceWeight []int, sumWeight int, numChoices int) int {
+// Calculates weighted random from list of weights. Result is selected index. Caller should handle which weight index is the actual selection value.
+func randomize(choiceWeight []int, sumWeight int, numChoices int) int {
 
 	// get random number from sum of all weights
 	var rnd int = rand.Intn(sumWeight)
@@ -48,8 +48,8 @@ func Randomize(choiceWeight []int, sumWeight int, numChoices int) int {
 	return index
 }
 
-// Reduce : reduces number of hours instances by countDifference number
-func Reduce(inputHours []int, countDifference int) []int {
+// Reduces number of hours instances by countDifference number
+func reduce(inputHours []int, countDifference int) []int {
 	// if there are no differences just return input
 	// negative differences means that theere are less hours as required, so also no reducing need
 	if countDifference <= 0 {

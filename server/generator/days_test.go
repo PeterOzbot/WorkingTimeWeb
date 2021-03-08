@@ -13,7 +13,7 @@ func Test_RandomizeDays_LessHours(t *testing.T) {
 	now := time.Date(2020, 4, 13, 0, 0, 0, 0, time.UTC)
 
 	// lets generate which days will be working
-	days := RandomizeDays(hours[:], now)
+	days := randomizeDays(hours[:], now)
 
 	// count working days
 	var workingDaysCont int = 0
@@ -37,7 +37,7 @@ func Test_RandomizeDays_MoreHours(t *testing.T) {
 	now := time.Date(2020, 4, 13, 0, 0, 0, 0, time.UTC)
 
 	// lets generate which days will be working
-	days := RandomizeDays(hours[:], now)
+	days := randomizeDays(hours[:], now)
 
 	// check working days
 	for _, workingDay := range days {
