@@ -1,8 +1,8 @@
 package generator
 
 import (
-	"math/rand"
 	"workingtimeweb/server/core"
+	"workingtimeweb/server/randomize"
 )
 
 // Generates list for days with random hours.
@@ -10,13 +10,11 @@ func generateHours(totalHours int) []int {
 
 	// index 0 is for 1h, while index 9 is for 10h
 	choiceWeight := [10]int{0, 1, 2, 4, 5, 5, 6, 8, 3, 1}
-	sumWeight := 35
-	numChoices := 10
 
 	// randomize hours until all are used
 	var hours []int
 	for totalHours > 0 {
-		var workingHours int = randomize(choiceWeight[:], sumWeight, numChoices)
+		var workingHours int = randomize.Weighted(choiceWeight[:])
 		// index 0 is for 1h, while index 9 is for 10h so it should be incremented by 1
 		workingHours++
 
@@ -26,26 +24,6 @@ func generateHours(totalHours int) []int {
 	}
 
 	return hours
-}
-
-// Calculates weighted random from list of weights. Result is selected index. Caller should handle which weight index is the actual selection value.
-func randomize(choiceWeight []int, sumWeight int, numChoices int) int {
-
-	// get random number from sum of all weights
-	var rnd int = rand.Intn(sumWeight)
-
-	// search for randomized index
-	// https://stackoverflow.com/questions/1761626/weighted-random-numbers
-	var index int
-	for index = 0; index < numChoices; index++ {
-		if rnd < choiceWeight[index] {
-			break
-		}
-
-		rnd -= choiceWeight[index]
-	}
-
-	return index
 }
 
 // Reduces number of hours instances by countDifference number

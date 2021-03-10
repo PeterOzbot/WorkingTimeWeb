@@ -17,7 +17,7 @@
 /node_modules
 
 # go executables
-/server/db/db
+/server/host/host
 
 .DS_Store
 /dist

@@ -8,3 +8,12 @@ func Min(a, b int) int {
 
 	return b
 }
+
+// Sum : Returns sum of all items in array.
+func Sum(array []int) int {
+	sum := 0
+	for _, value := range array {
+		sum += value
+	}
+	return sum
+}
