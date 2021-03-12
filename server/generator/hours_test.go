@@ -2,6 +2,7 @@ package generator
 
 import (
 	"testing"
+	"workingtimeweb/server/core"
 )
 
 // Test_Reduce : Test if hours remain unchanged if there is zero difference.
@@ -52,7 +53,29 @@ func Test_Reduce_Simple(t *testing.T) {
 	}
 }
 
-// Test_GenerateHours : Test ...
-func Test_GenerateHours(t *testing.T) {
-	t.Errorf("implement")
+// Test_GenerateHours : Test if zero hours as input are handled.
+func Test_GenerateHours_Zero(t *testing.T) {
+	totalHours := 0
+	choiceWeight := [10]int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+
+	result := generateHours(totalHours, choiceWeight)
+
+	if len(result) != 0 {
+		t.Errorf("zero input should return NO hourS")
+	}
+}
+
+// Test_GenerateHours : Test if sum of generated hours matches requested input.
+func Test_GenerateHours_Sum(t *testing.T) {
+	totalHours := 12
+	choiceWeight := [10]int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+
+	result := generateHours(totalHours, choiceWeight)
+
+	if len(result) == 0 {
+		t.Errorf("should return some hours")
+	}
+	if core.Sum(result) != totalHours {
+		t.Errorf("sum of generated hours do not match requested total hours")
+	}
 }

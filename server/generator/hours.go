@@ -6,20 +6,24 @@ import (
 )
 
 // Generates list for days with random hours.
-func generateHours(totalHours int) []int {
-
-	// index 0 is for 1h, while index 9 is for 10h
-	choiceWeight := [10]int{0, 1, 2, 4, 5, 5, 6, 8, 3, 1}
+func generateHours(totalHours int, choiceWeight [10]int) []int {
 
 	// randomize hours until all are used
 	var hours []int
+
+	// generate until total hours have been used
 	for totalHours > 0 {
+
+		// get random hours
 		var workingHours int = randomize.Weighted(choiceWeight[:])
 		// index 0 is for 1h, while index 9 is for 10h so it should be incremented by 1
 		workingHours++
 
+		// handle if we reach the total hours
 		workingHours = core.Min(totalHours, workingHours)
 		totalHours -= workingHours
+
+		// add to list
 		hours = append(hours, workingHours)
 	}
 

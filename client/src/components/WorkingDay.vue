@@ -49,7 +49,7 @@ export default class WorkingDayComponent extends Vue {
       case 6:
         return "Saturday";
       case 7:
-        return "Saturday";
+        return "Sunday";
       default:
         return "??";
     }
@@ -70,7 +70,7 @@ export default class WorkingDayComponent extends Vue {
 
 <style>
 .working-day-card {
-  min-width: 200px;
+  /* min-width: 200px; */
 }
 .working-day-off {
   opacity: 0.5;

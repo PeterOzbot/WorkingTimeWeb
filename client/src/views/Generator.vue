@@ -1,13 +1,9 @@
 <template>
   <div>
-    <v-container grid-list-md fluid class="grey lighten-4">
-      <v-row>
-        <v-col
-          v-for="(workingDay, index) in workingDays"
-          v-bind:key="index"
-          md4
-        >
-          <WorkingDayComponent v-bind:workingDay="workingDay" />
+    <v-container>
+      <v-row v-for="(week, weekIndex) in workingDays" v-bind:key="weekIndex">
+        <v-col v-for="(day, dayIndex) in week" v-bind:key="dayIndex" md4>
+          <WorkingDayComponent v-bind:workingDay="day" />
         </v-col>
       </v-row>
     </v-container>
@@ -19,8 +15,10 @@ import apiClient from "../services/apiClient";
 import WorkingDayComponent from "@/components/WorkingDay.vue";
 import { Resolve } from "@dvolper/tsdi";
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
 import { NotificationService } from "../services/notificationService";
+import WorkingDay from "@/models/workingDay";
+import moment from "moment";
 
 @Component({
   components: { WorkingDayComponent }
@@ -28,11 +26,22 @@ import { NotificationService } from "../services/notificationService";
 export default class GeneratorView extends Vue {
   @Resolve
   public readonly NotificationService: NotificationService;
-  @Prop()
-  public workingDays: [];
+  workingDays: WorkingDay[][] = [];
 
   async created(): Promise<void> {
-    this.workingDays = await apiClient.generate({ totalHours: 120 });
+    const workingDays = await apiClient.generate({ totalHours: 120 });
+
+    let week: WorkingDay[] = [];
+    for (const day of workingDays) {
+      week.push(day);
+      if (moment(day.date).isoWeekday() === 7) {
+        this.workingDays.push(week);
+        week = [];
+      }
+    }
+    if (week.length > 0) {
+      this.workingDays.push(week);
+    }
   }
 }
 </script>

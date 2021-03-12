@@ -6,10 +6,10 @@ import (
 )
 
 // Fills working days. Result is array with true if day should have working hours.
-func fillDays(hours []int, desiredDate time.Time) []*WorkingDay {
+func fillDays(hours []int, year int, month time.Month, skipDayChance [7]int) []*WorkingDay {
 
 	// get available days
-	var availableDays int = time.Date(desiredDate.Year(), desiredDate.Month()+1, 0, 0, 0, 0, 0, time.UTC).Day()
+	var availableDays int = time.Date(year, month+1, 0, 0, 0, 0, 0, time.UTC).Day()
 
 	// initialize array of working days
 	var days []*WorkingDay = make([]*WorkingDay, availableDays)
@@ -19,7 +19,7 @@ func fillDays(hours []int, desiredDate time.Time) []*WorkingDay {
 	hours = reduce(hours, countDifference)
 
 	// initialize workign date in case the input is not first of the month
-	workingDate := time.Date(desiredDate.Year(), desiredDate.Month(), 1, 0, 0, 0, 0, time.UTC)
+	workingDate := time.Date(year, month, 1, 0, 0, 0, 0, time.UTC)
 
 	// used to go through hours array
 	var hoursIndex int = 0
@@ -32,8 +32,8 @@ func fillDays(hours []int, desiredDate time.Time) []*WorkingDay {
 		currentHours := 0
 
 		// figure it out if its working day only if there are enough hours
-		// and day is not skipped
-		if len(hours)-1 >= hoursIndex && !skipDay(workingDate) {
+		// and day is not skiped
+		if len(hours)-1 >= hoursIndex && !skipDay(workingDate, skipDayChance) {
 			isWorking = true
 			currentHours = hours[hoursIndex]
 			hoursIndex++
@@ -66,19 +66,12 @@ func fillDays(hours []int, desiredDate time.Time) []*WorkingDay {
 	return days
 }
 
-// Should day be skipped when setting hours.
-func skipDay(date time.Time) bool {
+// Should day be skiped when setting hours.
+func skipDay(date time.Time, skipChance [7]int) bool {
 
 	// get day of the week
 	dayOfTheWeek := int(date.Weekday())
 
-	if dayOfTheWeek == int(time.Saturday) {
-		return rand.Intn(4) != 0
-	}
-
-	if dayOfTheWeek == int(time.Sunday) {
-		return rand.Intn(8) != 0
-	}
-
-	return rand.Intn(3) == 0
+	// run rand and match
+	return rand.Intn(skipChance[dayOfTheWeek]) == 0
 }
