@@ -12,11 +12,14 @@ func Generate(request *Request) []*WorkingDay {
 	rand.Seed(time.Now().UnixNano())
 
 	// index 0 is for 1h, while index 9 is for 10h
-	choiceWeight := [10]int{0, 1, 2, 4, 5, 5, 6, 8, 3, 1}
+	choiceWeight := [10]int{0, 0, 2, 2, 4, 4, 10, 10, 3, 1}
 
 	// get hours
 	var hours []int = generateHours(request.TotalHours, choiceWeight)
 
+	// skip day chance
+	skipDay := [7]int{6, -8, -8, -8, -8, -8, 4}
+
 	// get days
-	return fillDays(hours, time.Now().Year(), time.Now().Month(), [7]int{8, 3, 3, 3, 3, 3, 4})
+	return fillDays(hours, request.Year, time.Month(request.Month), skipDay)
 }

@@ -1,5 +1,11 @@
 export default class WorkingDay {
   public date: Date;
-  public isWorking: boolean;
   public hours: number;
+  public isIrrelevantMonth: boolean;
+
+  constructor(date: Date, hours: number, isIrrelevantMonth: boolean) {
+    this.date = date;
+    this.hours = hours;
+    this.isIrrelevantMonth = isIrrelevantMonth;
+  }
 }

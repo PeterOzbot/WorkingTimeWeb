@@ -1,15 +1,15 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Generator from "../views/Generator.vue";
-import Calendar from "@/views/Calendar.vue";
+import Generator from "../views/Generator/Generator.vue";
+import GeneratorInput from "../views/Generator/GeneratorInput.vue";
 
 Vue.use(VueRouter);
 
 export default new VueRouter({
   mode: "history",
   routes: [
-    { path: "/", redirect: "/calendar" },
-    { path: "/generator", component: Generator },
-    { path: "/calendar", component: Calendar }
+    { path: "/", redirect: "/generator" },
+    { path: "/generator", component: GeneratorInput },
+    { path: "/generator/:hours/:month/:year", component: Generator }
   ]
 });

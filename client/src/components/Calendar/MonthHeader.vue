@@ -10,16 +10,21 @@ import moment from "moment";
 @Component
 export default class MonthHeaderComponent extends Vue {
   @Prop()
-  public currentMonth: Date;
+  public currentMonth: number;
+  @Prop()
+  public currentYear: number;
 
   get formatCurrentMonth(): string {
-    return moment(this.currentMonth).format("MMMM YYYY");
+    return moment(new Date(this.currentYear, this.currentMonth, 1)).format(
+      "MMMM YYYY"
+    );
   }
 }
 </script>
 
 <style scoped>
 .calendar-date-indicator {
-  font-size: 24px;
+  font-size: 28px;
+  padding: 10px;
 }
 </style>

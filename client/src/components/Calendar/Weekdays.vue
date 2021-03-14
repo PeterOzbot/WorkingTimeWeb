@@ -1,5 +1,5 @@
 <template>
-  <ol class="day-of-week">
+  <ol class="week">
     <li v-for="weekday in Weekdays" :key="weekday">
       <div class="weekday">
         {{ weekday }}
@@ -34,14 +34,19 @@ li {
   list-style: none;
 }
 
-.day-of-week {
+.week {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  padding: 10px;
 }
 
-.day-of-week > * {
+.week li:last-child .weekday {
+  border: 0px;
+}
+
+.weekday {
   text-align: center;
-  padding-right: 5px;
+  padding: 15px;
+  background-color: #67b567;
+  border-right: 1px solid #dbdbdb;
 }
 </style>

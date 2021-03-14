@@ -2,11 +2,22 @@
   <li
     class="calendar-day"
     :class="{
-      'calendar-day--not-current': !isCurrentMonth,
-      'calendar-day--today': isToday
+      holiday: isHoliday
     }"
   >
-    <span>{{ label }}</span>
+    <div
+      class="day-container"
+      :class="{ 'irrelevantMonth-day': day.isIrrelevantMonth }"
+    >
+      <div class="day-hours" :class="{ 'not-working-day': day.hours == 0 }">
+        <div class="hours-input" v-if="!day.isIrrelevantMonth">
+          <input type="number" v-model="day.hours" />
+        </div>
+      </div>
+      <div class="day-number">
+        <span>{{ dayLabel }}</span>
+      </div>
+    </div>
   </li>
 </template>
 
@@ -18,54 +29,90 @@ import WorkingDay from "@/models/workingDay";
 @Component
 export default class DayComponent extends Vue {
   @Prop()
-  isCurrentMonth = true;
-  @Prop()
   day: WorkingDay;
 
-  get label() {
-    return this.day.date.getDate();
+  get dayLabel(): string {
+    if (!this.day.isIrrelevantMonth) {
+      return `${this.day.date.getDate()}.`;
+    } else {
+      return `${this.day.date.getDate()}.${this.day.date.getMonth() + 1}`;
+    }
   }
 
-  get isToday() {
-    return (
-      this.day.date.setHours(0, 0, 0, 0) == new Date().setHours(0, 0, 0, 0)
-    );
+  get isHoliday(): boolean {
+    return this.day.date.getDay() == 1;
   }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .calendar-day {
-  position: relative;
-  min-height: 100px;
-  font-size: 16px;
-  background-color: #fff;
-  color: var(--grey-800);
-  padding: 5px;
+  min-height: 120px;
 }
 
-.calendar-day > span {
+.irrelevantMonth-day {
+  opacity: 0.5;
+
+  & > * {
+    color: #9d9d9d;
+  }
+}
+
+.day-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  right: 2px;
-  width: var(--day-label-size);
-  height: var(--day-label-size);
+  flex-flow: column;
+  height: 100%;
+  background-color: white;
+
+  .day-hours {
+    flex: 1 0 auto;
+    font-size: 20px;
+
+    .hours-input {
+      width: 35%;
+      margin-top: 20px;
+      margin: 25px;
+      margin-right: 25px;
+    }
+
+    .hours-input input {
+      width: 50%;
+      text-align: center;
+      outline-width: 0;
+    }
+
+    .hours-input:focus-within {
+      border-bottom: solid 1px #5a5aff;
+    }
+
+    .hours-input::after {
+      content: "h";
+    }
+  }
+
+  .not-working-day {
+    opacity: 0.5;
+  }
+
+  .day-number {
+    flex: 0 0 auto;
+    background-color: #f4f4f4;
+    text-align: right;
+    padding-bottom: 5px;
+    padding-right: 20px;
+    padding-top: 5px;
+
+    span {
+      font-size: 12px;
+      font-weight: 500;
+    }
+  }
 }
 
-.calendar-day--not-current {
-  background-color: var(--grey-100);
-  color: var(--grey-300);
-}
-
-.calendar-day--today {
-  padding-top: 4px;
-}
-
-.calendar-day--today > span {
-  color: #fff;
-  border-radius: 9999px;
-  background-color: var(--grey-800);
+ol,
+li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 </style>
