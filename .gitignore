@@ -14,7 +14,12 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
-/node_modules
+node_modules
+.DS_Store
+dist
+dist-ssr
+coverage
+*.local
 
 # go executables
 /server/host/host
@@ -26,16 +31,22 @@
 .env.local
 .env.*.local
 
-# Log files
+# Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
 # Editor directories and files
+.vscode/*
+!.vscode/extensions.json
 .idea
-.vscode
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
