@@ -10,9 +10,11 @@
       :class="{ 'irrelevantMonth-day': day.isIrrelevantMonth }"
     >
       <div class="day-hours" :class="{ 'not-working-day': day.hours == 0 }">
-        <div class="hours-input" v-if="!day.isIrrelevantMonth">
-          <input type="number" v-model="day.hours" />
-        </div>
+        <InputComponent
+          v-if="!day.isIrrelevantMonth"
+          :model.sync="day.hours"
+          after="h"
+        />
       </div>
       <div class="day-number">
         <span>{{ dayLabel }}</span>
@@ -25,8 +27,11 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import WorkingDay from "@/models/workingDay";
+import InputComponent from "@/components/Controls/Input.vue";
 
-@Component
+@Component({
+  components: { InputComponent }
+})
 export default class DayComponent extends Vue {
   @Prop()
   day: WorkingDay;
@@ -67,27 +72,6 @@ export default class DayComponent extends Vue {
   .day-hours {
     flex: 1 0 auto;
     font-size: 20px;
-
-    .hours-input {
-      width: 35%;
-      margin-top: 20px;
-      margin: 25px;
-      margin-right: 25px;
-    }
-
-    .hours-input input {
-      width: 50%;
-      text-align: center;
-      outline-width: 0;
-    }
-
-    .hours-input:focus-within {
-      border-bottom: solid 1px #5a5aff;
-    }
-
-    .hours-input::after {
-      content: "h";
-    }
   }
 
   .not-working-day {

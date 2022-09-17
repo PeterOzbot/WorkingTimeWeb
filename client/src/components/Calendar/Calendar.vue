@@ -3,8 +3,8 @@
     <v-card class="calendar-month" elevation="3">
       <div class="calendar-month-header">
         <MonthHeaderComponent
-          v-bind:currentMonth="currentMonth"
-          v-bind:currentYear="currentYear"
+          :currentMonth="currentMonth"
+          :currentYear="currentYear"
         />
       </div>
       <WeekdaysComponent />

@@ -1,8 +1,8 @@
 <template>
   <CalendarComponent
-    v-bind:generatedWorkingDays="generatedWorkingDays"
-    v-bind:currentYear="generatorRequest.year"
-    v-bind:currentMonth="generatorRequest.month - 1"
+    :generatedWorkingDays="generatedWorkingDays"
+    :currentYear="generatorRequest.year"
+    :currentMonth="generatorRequest.month - 1"
     class="generator-calendar"
   />
 </template>
