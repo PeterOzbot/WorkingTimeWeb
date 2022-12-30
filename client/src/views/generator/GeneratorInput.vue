@@ -5,11 +5,7 @@
         <div class="input-label">Total Hours:</div>
       </div>
       <div class="column">
-        <InputComponent
-          class="hours-input"
-          :model.sync="generatorRequest.totalHours"
-          after="h"
-        />
+        <InputComponent class="hours-input" v-model:value="generatorRequest.totalHours" after="h" />
       </div>
     </div>
     <div class="year-container">
@@ -17,35 +13,28 @@
         <div class="input-label">Year:</div>
       </div>
       <div class="column">
-        <InputComponent
-          class="year-input"
-          :model.sync="generatorRequest.year"
-        />
+        <InputComponent class="year-input" v-model:value="generatorRequest.year" />
       </div>
     </div>
     <div class="month-container">
       Months
     </div>
-    
+
   </v-card>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import InputComponent from "@/components/Controls/Input.vue";
-import GeneratorRequest from "@/models/generatorRequest";
+<script lang="ts" setup>
 
-@Component({
-  components: { InputComponent }
-})
-export default class GeneratorInputView extends Vue {
-  generatorRequest: GeneratorRequest = {
-    totalHours: 0,
-    month: 0,
-    year: new Date().getFullYear()
-  };
-}
+import InputComponent from "@/components/controls/Input.vue";
+import type GeneratorRequest from "@/models/generatorRequest";
+
+
+let generatorRequest: GeneratorRequest = {
+  totalHours: 0,
+  month: 0,
+  year: new Date().getFullYear()
+};
+
 </script>
 
 <style scoped lang="scss">
@@ -76,7 +65,7 @@ export default class GeneratorInputView extends Vue {
     display: flex;
     flex-flow: row;
 
-    background-color:#67b567;
+    background-color: #67b567;
 
     .input-label {
       margin: 20px;
@@ -84,6 +73,7 @@ export default class GeneratorInputView extends Vue {
       font-size: 30px;
       text-align: right;
     }
+
     .hours-input {
       font-size: 30px;
       margin-left: 60px;
@@ -113,6 +103,7 @@ export default class GeneratorInputView extends Vue {
       font-size: 30px;
       text-align: right;
     }
+
     .year-input {
       font-size: 30px;
       margin-left: 60px;

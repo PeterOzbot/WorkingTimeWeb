@@ -1,20 +1,8 @@
 <template>
   <div class="hours-input">
-    <div
-      :class="{
-        'first-column': after != undefined
-      }"
-    >
-      <input
-        :class="{
-          'after-input': after != undefined,
-          'solo-input': after == undefined
-        }"
-        type="number"
-        v-model="model"
-        @keyup="$emit('update:model', model)"
-        @focus="$event.target.select()"
-      />
+    <div :class="{ 'first-column': after != undefined }">
+      <input :class="{ 'after-input': after != undefined, 'solo-input': after == undefined }" type="number"
+        v-model="value" @keyup="$emit('update:value', value)" @focus="selectAll($event)" />
     </div>
     <div class="second-column" v-if="after != undefined">
       <div class="after-content">{{ after }}</div>
@@ -22,17 +10,17 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+<script lang="ts" setup>
 
-@Component
-export default class InputComponent extends Vue {
-  @Prop()
-  public model: number;
-  @Prop()
-  public after: string;
+const props = defineProps({
+  value: Number,
+  after: String
+})
+
+function selectAll(event: FocusEvent) {
+  (<HTMLInputElement>event.target)?.select();
 }
+
 </script>
 
 <style scoped lang="scss">
@@ -76,6 +64,7 @@ export default class InputComponent extends Vue {
 .hours-input input::-moz-selection {
   background: #94cb94;
 }
+
 .hours-input input::selection {
   background: #94cb94;
 }

@@ -6,7 +6,7 @@ Vue.js + Go with MongoDB as database
 ## Build
 cd ./server/host ~> go build
 ## Run
-cd ./server/host/ ~> host -port 8080
+cd ./server/host/ ~> ./host -port 8080
 
 # Frontend - Vue
 ## Run

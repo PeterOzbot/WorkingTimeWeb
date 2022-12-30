@@ -1,9 +1,9 @@
-import WorkingDay from "@/models/workingDay";
-import axios, { Method } from "axios";
+import type WorkingDay from "@/models/workingDay";
+import axios, { type Method } from "axios";
 import handleDates from "@/utils/parseDate";
-import GeneratorRequest from "../models/generatorRequest";
+import type GeneratorRequest from "../models/generatorRequest";
 
-const BASE_URI = process.env.VUE_APP_BASE_API_URI;
+const BASE_URI = "http://localhost:8080"//process.env.VUE_APP_BASE_API_URI; TODO
 const client = axios.create({
   baseURL: BASE_URI
 });

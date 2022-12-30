@@ -1,15 +1,14 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import Generator from "../views/Generator/Generator.vue";
-import GeneratorInput from "../views/Generator/GeneratorInput.vue";
+import { createRouter, createWebHistory } from "vue-router";
+import GeneratorInput from "@/views/generator/GeneratorInput.vue";
+import Generator from "@/views/generator/Generator.vue";
 
-Vue.use(VueRouter);
-
-export default new VueRouter({
-  mode: "history",
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: "/", redirect: "/generator" },
     { path: "/generator", component: GeneratorInput },
     { path: "/generator/:hours/:month/:year", component: Generator }
-  ]
+  ],
 });
+
+export default router;

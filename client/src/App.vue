@@ -1,28 +1,19 @@
-<template>
-  <v-app>
-    <router-view></router-view>
-    <!-- <FooterComponent></FooterComponent> -->
-  </v-app>
-</template>
-
-<script>
-//import FooterComponent from "./components/Footer.vue";
-
-export default {
-  name: "App"
-  //components: { FooterComponent }
-};
+<script setup lang="ts">
+import { RouterView } from "vue-router";
 </script>
 
+<template>
+  <RouterView />
+</template>
+
 <style>
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  /* display: none; <- Crashes Chrome on hover */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
-  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  margin: 0;
 }
 
 input[type="number"] {
-  -moz-appearance: textfield; /* Firefox */
+  -moz-appearance: textfield;
 }
 </style>

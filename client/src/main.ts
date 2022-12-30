@@ -1,17 +1,26 @@
-import Vue from "vue";
+import { createApp } from "vue";
+import { createPinia } from "pinia";
+
 import App from "./App.vue";
 import router from "./router";
-import store from "./store";
-import vuetify from "./plugins/vuetify";
-import TypeScriptDependencyInjection from "@dvolper/tsdi-vue";
 
-Vue.config.productionTip = false;
+const app = createApp(App);
 
-new Vue({
-  router,
-  store,
-  vuetify,
-  render: h => h(App)
-}).$mount("#app");
+app.use(createPinia());
+app.use(router);
 
-Vue.use(TypeScriptDependencyInjection);
+// Vuetify
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+
+const vuetify = createVuetify({
+    components,
+    directives,
+})
+
+app.use(vuetify).mount('#app')
+
+
+//LEARNING: https://vuejs.org/guide/essentials/template-syntax.html#directives
