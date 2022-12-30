@@ -1,8 +1,8 @@
 <template>
-  <li class="calendar-day" :class="{ holiday: isHoliday() }">
+  <li class="calendar-day" :class="{ holiday: isHoliday() }" @click="focusInputElement()">
     <div class="day-container" :class="{ 'irrelevantMonth-day': day.isIrrelevantMonth }">
       <div class="day-hours" :class="{ 'not-working-day': day.hours == 0 }">
-        <InputComponent v-if="!day.isIrrelevantMonth" v-model:value="day.hours" after="h" />
+        <InputComponent ref="inputElement" v-if="!day.isIrrelevantMonth" v-model="day.hours" after="h" />
       </div>
       <div class="day-number">
         <span>{{ dayLabel() }}</span>
@@ -14,13 +14,11 @@
 <script lang="ts" setup>
 import type WorkingDay from "@/models/workingDay";
 import InputComponent from "@/components/controls/Input.vue";
-import type { PropType } from "vue";
+import { ref, type PropType } from "vue";
 
 const props = defineProps({
   day: { type: Object as PropType<WorkingDay>, required: true },
 });
-
-//const day = reactive(props.day);
 
 function dayLabel(): string {
   if (!props.day.isIrrelevantMonth) {
@@ -32,6 +30,11 @@ function dayLabel(): string {
 
 function isHoliday(): boolean {
   return props.day.date.getDay() == 1;
+}
+
+const inputElement = ref<InstanceType<typeof InputComponent>>();
+function focusInputElement() {
+  inputElement.value?.focus();
 }
 
 </script>

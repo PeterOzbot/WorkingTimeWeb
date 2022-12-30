@@ -1,33 +1,37 @@
 <template>
-  <v-card class="input-container" elevation="6">
-    <div class="hours-container">
-      <div class="column">
-        <div class="input-label">Total Hours:</div>
+  <div class="generator-input-container">
+    <v-card class="input-container" elevation="6">
+      <div class="hours-container">
+        <div class="column">
+          <div class="input-label">Total Hours:</div>
+        </div>
+        <div class="column">
+          <InputComponent class="hours-input" v-model="generatorRequest.totalHours" after="h" />
+        </div>
       </div>
-      <div class="column">
-        <InputComponent class="hours-input" v-model:value="generatorRequest.totalHours" after="h" />
+      <div class="year-container">
+        <div class="column">
+          <div class="input-label">Year:</div>
+        </div>
+        <div class="column">
+          <InputComponent class="year-input" v-model="generatorRequest.year" />
+        </div>
       </div>
-    </div>
-    <div class="year-container">
-      <div class="column">
-        <div class="input-label">Year:</div>
-      </div>
-      <div class="column">
-        <InputComponent class="year-input" v-model:value="generatorRequest.year" />
-      </div>
-    </div>
-    <div class="month-container">
-      Months
-    </div>
+      <MonthSelectorComponent v-model="generatorRequest.month" />
+    </v-card>
 
-  </v-card>
+    <v-card class="generate-button" @click="generate()" elevation="6">
+      Generate
+    </v-card>
+  </div>
 </template>
 
 <script lang="ts" setup>
 
 import InputComponent from "@/components/controls/Input.vue";
+import MonthSelectorComponent from "@/components/month-selector/MonthSelector.vue"
 import type GeneratorRequest from "@/models/generatorRequest";
-
+import { useRouter } from "vue-router";
 
 let generatorRequest: GeneratorRequest = {
   totalHours: 0,
@@ -35,17 +39,28 @@ let generatorRequest: GeneratorRequest = {
   year: new Date().getFullYear()
 };
 
+const router = useRouter();
+
+function generate() {
+  router.push({ path: `/generator/${generatorRequest.totalHours}/${generatorRequest.month}/${generatorRequest.year}` })
+}
+
+
 </script>
 
 <style scoped lang="scss">
-.input-container {
+.generator-input-container {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-container {
   width: 50vw;
-  height: 50vh;
 
   display: flex;
   flex-flow: column;
@@ -81,11 +96,6 @@ let generatorRequest: GeneratorRequest = {
     }
   }
 
-  .month-container {
-    //background-color: green;
-    flex: 1 0 auto;
-  }
-
   .year-container {
     width: 100%;
     flex: 0 0 auto;
@@ -110,5 +120,12 @@ let generatorRequest: GeneratorRequest = {
       margin-right: 60px;
     }
   }
+}
+
+.generate-button {
+  margin: 50px;
+  padding: 15px;
+  background-color: #67b567;
+  font-size: 30px;
 }
 </style>

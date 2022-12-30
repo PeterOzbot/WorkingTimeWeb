@@ -1,8 +1,8 @@
 <template>
   <div class="hours-input">
     <div :class="{ 'first-column': after != undefined }">
-      <input :class="{ 'after-input': after != undefined, 'solo-input': after == undefined }" type="number"
-        v-model="value" @keyup="$emit('update:value', value)" @focus="selectAll($event)" />
+      <input ref="inputElement" :class="{ 'after-input': after != undefined, 'solo-input': after == undefined }"
+        type="number" :value="modelValue" @input="onInput($event)" @focus="selectAll($event)" />
     </div>
     <div class="second-column" v-if="after != undefined">
       <div class="after-content">{{ after }}</div>
@@ -11,11 +11,28 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue';
 
+const emit = defineEmits(['update:modelValue'])
 const props = defineProps({
-  value: Number,
-  after: String
+  modelValue: Number,
+  after: String,
 })
+
+const inputElement = ref<HTMLInputElement>()
+defineExpose({
+  focus: () => { inputElement.value?.focus(); }
+})
+
+
+function onInput(event: Event) {
+  const htmlInputElement = <HTMLInputElement>event?.target;
+  if (htmlInputElement) {
+    let newValue = Number(htmlInputElement.value);
+    htmlInputElement.value = newValue.toString();
+    emit('update:modelValue', newValue)
+  }
+}
 
 function selectAll(event: FocusEvent) {
   (<HTMLInputElement>event.target)?.select();
