@@ -1,9 +1,7 @@
 <template>
   <div class="calendar">
     <v-card class="calendar-month" elevation="3">
-      <div class="calendar-month-header">
-        <MonthHeaderComponent :currentMonth="currentMonth" :currentYear="currentYear" />
-      </div>
+      <MonthHeaderComponent :currentMonth="currentMonth" :currentYear="currentYear" @download="downloadExcel()" />
       <WeekdaysComponent />
     </v-card>
     <v-card class="calendar-days" elevation="5">
@@ -18,8 +16,11 @@
 import WeekdaysComponent from "./Weekdays.vue";
 import MonthHeaderComponent from "./MonthHeader.vue";
 import DayComponent from "./Day.vue";
-import WorkingDay from "@/models/workingDay";
+import EditableWorkingDay from "@/models/editableWorkingDay";
 import { watch, ref } from "vue";
+import type WorkingDay from "@/models/workingDay";
+import apiClient from "@/services/apiClient";
+import CreateRequest from "@/models/createRequest";
 
 const props = defineProps({
   generatedWorkingDays: { type: Array<WorkingDay>, required: true },
@@ -27,7 +28,15 @@ const props = defineProps({
   currentYear: { type: Number, required: true },
 });
 
-let workingDays = ref(new Array<WorkingDay>());
+
+async function downloadExcel() {
+  const createRequest = new CreateRequest();
+  createRequest.days = workingDays.value.filter(day => day.hours > 0);
+  const result = await apiClient.create(createRequest);
+  alert("count: " + createRequest.days.length + " result: " + result);
+}
+
+let workingDays = ref(new Array<EditableWorkingDay>());
 
 // when generated days change prepare calendar
 watch(() => props.generatedWorkingDays, () => { prepareCalendar(); });
@@ -35,13 +44,22 @@ watch(() => props.generatedWorkingDays, () => { prepareCalendar(); });
 function prepareCalendar() {
   workingDays.value = [
     ...getDaysInPreviousMonth(),
-    ...props.generatedWorkingDays,
+    ...prepareGeneratedWorkingDays(props.generatedWorkingDays),
     ...getDaysInNextMonth()
   ];
 }
 
-function getDaysInPreviousMonth() {
-  const days: WorkingDay[] = [];
+function prepareGeneratedWorkingDays(generatedWorkingDays: WorkingDay[]): EditableWorkingDay[] {
+  const days: EditableWorkingDay[] = [];
+  for (let workingDay of generatedWorkingDays) {
+    days.push(new EditableWorkingDay(workingDay.date, workingDay.hours, false));
+  }
+
+  return days;
+}
+
+function getDaysInPreviousMonth(): EditableWorkingDay[] {
+  const days: EditableWorkingDay[] = [];
   // create first of the month
   const date = new Date(props.currentYear, props.currentMonth, 1);
 
@@ -57,7 +75,7 @@ function getDaysInPreviousMonth() {
   // add days if there are any left
   while (previousMonthDays > 0) {
     // add day
-    days.push(new WorkingDay(new Date(date), 0, true));
+    days.push(new EditableWorkingDay(new Date(date), 0, true));
 
     // increment day
     date.setDate(date.getDate() + 1);
@@ -68,8 +86,8 @@ function getDaysInPreviousMonth() {
   return days;
 }
 
-function getDaysInNextMonth() {
-  const days: WorkingDay[] = [];
+function getDaysInNextMonth(): EditableWorkingDay[] {
+  const days: EditableWorkingDay[] = [];
 
   // create last day of the month
   const date = new Date(props.currentYear, props.currentMonth + 1, 0);
@@ -86,7 +104,7 @@ function getDaysInNextMonth() {
   // add days if there are any left
   while (nextMonthDays > 0) {
     // add day
-    days.push(new WorkingDay(new Date(date), 0, true));
+    days.push(new EditableWorkingDay(new Date(date), 0, true));
 
     // increment day
     date.setDate(date.getDate() + 1);
@@ -102,13 +120,6 @@ function getDaysInNextMonth() {
 .calendar-month {
   position: relative;
   margin: 10px;
-}
-
-.calendar-month-header {
-  display: flex;
-  justify-content: center;
-  background-color: #94cb94;
-  padding: 10px;
 }
 
 .days-grid {

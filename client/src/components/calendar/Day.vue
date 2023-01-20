@@ -1,23 +1,29 @@
 <template>
-  <li class="calendar-day" :class="{ holiday: isHoliday() }" @click="focusInputElement()">
+  <li class="calendar-day" :class="{ holiday: isHoliday() }">
     <div class="day-container" :class="{ 'irrelevantMonth-day': day.isIrrelevantMonth }">
-      <div class="day-hours" :class="{ 'not-working-day': day.hours == 0 }">
+      <div class="day-hours" :class="{ 'not-working-day': day.hours == 0 }" @click="focusInputElement()">
         <InputComponent ref="inputElement" v-if="!day.isIrrelevantMonth" v-model="day.hours" after="h" />
       </div>
-      <div class="day-number">
-        <span>{{ dayLabel() }}</span>
+      <div class="day-footer">
+        <div class="day-number">
+          <span>{{ dayLabel() }}</span>
+        </div>
+        <div class="day-group">
+          <GroupInput v-if="!day.isIrrelevantMonth && day.hours > 0" v-model="day.groupId" />
+        </div>
       </div>
     </div>
   </li>
 </template>
 
 <script lang="ts" setup>
-import type WorkingDay from "@/models/workingDay";
-import InputComponent from "@/components/controls/Input.vue";
+import type EditableWorkingDay from "@/models/editableWorkingDay";
+import InputComponent from "@/components/controls/HoursInput.vue";
+import GroupInput from "@/components/controls/GroupInput.vue";
 import { ref, type PropType } from "vue";
 
 const props = defineProps({
-  day: { type: Object as PropType<WorkingDay>, required: true },
+  day: { type: Object as PropType<EditableWorkingDay>, required: true },
 });
 
 function dayLabel(): string {
@@ -67,13 +73,16 @@ function focusInputElement() {
     opacity: 0.5;
   }
 
-  .day-number {
-    flex: 0 0 auto;
+  .day-footer {
     background-color: #f4f4f4;
-    text-align: right;
     padding-bottom: 5px;
     padding-right: 20px;
     padding-top: 5px;
+  }
+
+  .day-number {
+    flex: 0 0 auto;
+    text-align: right;
 
     span {
       font-size: 12px;

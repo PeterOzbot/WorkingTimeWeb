@@ -18,7 +18,7 @@ func fillDays(hours []int, year int, month time.Month, skipDayChance [7]int) []*
 	countDifference := len(hours) - availableDays
 	hours = reduce(hours, countDifference)
 
-	// initialize workign date in case the input is not first of the month
+	// initialize working date in case the input is not first of the month
 	workingDate := time.Date(year, month, 1, 0, 0, 0, 0, time.UTC)
 
 	// used to go through hours array
@@ -31,7 +31,7 @@ func fillDays(hours []int, year int, month time.Month, skipDayChance [7]int) []*
 		currentHours := 0
 
 		// figure it out if its working day only if there are enough hours
-		// and day is not skiped
+		// and day is not skipped
 		if len(hours)-1 >= hoursIndex && !skipDay(workingDate, skipDayChance) {
 			currentHours = hours[hoursIndex]
 			hoursIndex++
@@ -62,7 +62,7 @@ func fillDays(hours []int, year int, month time.Month, skipDayChance [7]int) []*
 	return days
 }
 
-// Should day be skiped when setting hours.
+// Should day be skipped when setting hours.
 func skipDay(date time.Time, skipChance [7]int) bool {
 
 	// get day of the week

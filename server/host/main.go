@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+	"workingtimeweb/server/excel"
 	"workingtimeweb/server/generator"
 
 	"github.com/gin-contrib/cors"
@@ -44,8 +45,24 @@ func initCORS(router *gin.Engine) {
 
 func initHTTP(router *gin.Engine) {
 
-	// set the routs
+	// set the routes
 	router.POST("/generate", generate)
+	router.POST("/create", create)
+}
+
+func create(c *gin.Context) {
+	// deserialize create request
+	var requestList *RequestList = new(RequestList)
+	if err := c.ShouldBindJSON(requestList); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// create excel
+	excelFile := excel.Create(requestList.Days)
+
+	// return result
+	c.JSON(200, excelFile)
 }
 
 func generate(c *gin.Context) {
@@ -61,4 +78,8 @@ func generate(c *gin.Context) {
 
 	// return result
 	c.JSON(200, generatedWorkingDays)
+}
+
+type RequestList struct {
+	Days []*excel.Request `json:"days"`
 }

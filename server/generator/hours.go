@@ -33,12 +33,12 @@ func generateHours(totalHours int, choiceWeight [10]int) []int {
 // Reduces number of hours instances by countDifference number
 func reduce(inputHours []int, countDifference int) []int {
 	// if there are no differences just return input
-	// negative differences means that theere are less hours as required, so also no reducing need
+	// negative differences means that there are less hours as required, so also no reducing need
 	if countDifference <= 0 {
 		return inputHours
 	}
 
-	// clone the hours list to prevent changin the original
+	// clone the hours list to prevent changing the original
 	hours := make([]int, len(inputHours))
 	copy(hours[:], inputHours[:])
 

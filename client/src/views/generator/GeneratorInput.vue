@@ -28,7 +28,7 @@
 
 <script lang="ts" setup>
 
-import InputComponent from "@/components/controls/Input.vue";
+import InputComponent from "@/components/controls/HoursInput.vue";
 import MonthSelectorComponent from "@/components/month-selector/MonthSelector.vue"
 import type GeneratorRequest from "@/models/generatorRequest";
 import { useRouter } from "vue-router";

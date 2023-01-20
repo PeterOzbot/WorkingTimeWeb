@@ -12,7 +12,7 @@ func Generate(request *Request) []*WorkingDay {
 	rand.Seed(time.Now().UnixNano())
 
 	// index 0 is for 1h, while index 9 is for 10h
-	choiceWeight := [10]int{0, 0, 2, 2, 4, 4, 10, 10, 3, 1}
+	choiceWeight := [10]int{0, 8, 8, 6, 4, 4, 4, 4, 1, 1}
 
 	// get hours
 	var hours []int = generateHours(request.TotalHours, choiceWeight)
