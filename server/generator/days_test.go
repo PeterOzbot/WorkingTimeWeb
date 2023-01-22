@@ -28,7 +28,7 @@ func Test_FillDays_LessHours(t *testing.T) {
 	}
 }
 
-// Test_FillDays_MoreHours : Tests scenario with more hours are there are days. All days should be working.
+// Test_FillDays_MoreHours : Tests scenario with more hours that there are days. All days should be working.
 func Test_FillDays_MoreHours(t *testing.T) {
 	// we have hours for 40 separate days
 	hours := [40]int{4, 5, 3, 1, 10, 4, 5, 3, 1, 10, 4, 5, 3, 1, 10, 4, 5, 3, 1, 10, 4, 5, 3, 1, 10, 4, 5, 3, 1, 10, 4, 5, 3, 1, 10, 4, 5, 3, 1, 10}

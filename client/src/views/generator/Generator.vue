@@ -16,7 +16,8 @@ const route = useRoute()
 
 let generatedWorkingDays = ref(new Array<WorkingDay>);
 let generatorRequest: GeneratorRequest = {
-  totalHours: +route.params.hours,
+  a_hours: +route.params.a_hours,
+  b_hours: +route.params.b_hours,
   month: +route.params.month,
   year: +route.params.year
 };

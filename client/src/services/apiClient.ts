@@ -23,12 +23,39 @@ const APIClient = {
     );
   },
 
-  create(request: CreateRequest): Promise<string> {
-    return this.perform<string>(
-      "post",
-      `/create`,
-      JSON.stringify(request)
-    );
+  create(request: CreateRequest): Promise<void> {
+    // return this.perform<string>(
+    //   "post",
+    //   `/create`,
+    //   JSON.stringify(request)
+    // );
+    return client({
+      method: 'POST',
+      url: '/create',
+      responseType: 'blob', // important
+      data: JSON.stringify(request),
+      headers: {}
+    }).then(response => {
+
+
+      //return response.data;
+
+      const fileName = response.headers["file-name"]?.toString() ?? "file.xlsx";
+
+      // create file link in browser's memory
+      const href = URL.createObjectURL(response.data);
+
+      // create "a" HTML element with href to file & click
+      const link = document.createElement('a');
+      link.href = href;
+      link.setAttribute('download', fileName); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+
+      // clean up "a" element & remove ObjectURL
+      document.body.removeChild(link);
+      URL.revokeObjectURL(href);
+    });
   },
 
   async perform<T>(method: Method, resource: string, data: string): Promise<T> {
@@ -37,8 +64,8 @@ const APIClient = {
       url: resource,
       data: data,
       headers: {}
-    }).then<T>(req => {
-      return req.data;
+    }).then<T>(response => {
+      return response.data;
     });
   }
 };

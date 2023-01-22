@@ -1,14 +1,7 @@
 <template>
   <div class="generator-input-container">
     <v-card class="input-container" elevation="6">
-      <div class="hours-container">
-        <div class="column">
-          <div class="input-label">Total Hours:</div>
-        </div>
-        <div class="column">
-          <InputComponent class="hours-input" v-model="generatorRequest.totalHours" after="h" />
-        </div>
-      </div>
+      <GroupHours v-model="hourGroups" />
       <div class="year-container">
         <div class="column">
           <div class="input-label">Year:</div>
@@ -29,20 +22,27 @@
 <script lang="ts" setup>
 
 import InputComponent from "@/components/controls/HoursInput.vue";
-import MonthSelectorComponent from "@/components/month-selector/MonthSelector.vue"
+import MonthSelectorComponent from "@/components/input/MonthSelector.vue"
+import GroupHours from "@/components/input/GroupHours.vue"
 import type GeneratorRequest from "@/models/generatorRequest";
 import { useRouter } from "vue-router";
+import { onMounted, reactive, ref } from "vue";
 
 let generatorRequest: GeneratorRequest = {
-  totalHours: 0,
+  a_hours: 0,
+  b_hours: 0,
   month: 0,
   year: new Date().getFullYear()
 };
 
+let hourGroups = ref(new Array<number>());
+
 const router = useRouter();
 
 function generate() {
-  router.push({ path: `/generator/${generatorRequest.totalHours}/${generatorRequest.month}/${generatorRequest.year}` })
+  generatorRequest.a_hours = hourGroups.value[0];
+  generatorRequest.b_hours = hourGroups.value[1];
+  router.push({ path: `/generator/${generatorRequest.a_hours}/${generatorRequest.b_hours}/${generatorRequest.month}/${generatorRequest.year}` })
 }
 
 
@@ -70,30 +70,6 @@ function generate() {
     flex-direction: column;
     flex-basis: 100%;
     flex: 1;
-  }
-
-  .hours-container {
-    flex: 0 0 auto;
-
-    width: 100%;
-    flex-wrap: wrap;
-    display: flex;
-    flex-flow: row;
-
-    background-color: #67b567;
-
-    .input-label {
-      margin: 20px;
-      margin-right: 50px;
-      font-size: 30px;
-      text-align: right;
-    }
-
-    .hours-input {
-      font-size: 30px;
-      margin-left: 60px;
-      margin-right: 60px;
-    }
   }
 
   .year-container {

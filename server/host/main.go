@@ -37,7 +37,7 @@ func initCORS(router *gin.Engine) {
 		AllowOrigins:     []string{"http://localhost:5173"},
 		AllowMethods:     []string{"GET", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type"},
-		ExposeHeaders:    []string{"Content-Length"},
+		ExposeHeaders:    []string{"Content-Length", "File-Name"},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
@@ -52,7 +52,7 @@ func initHTTP(router *gin.Engine) {
 
 func create(c *gin.Context) {
 	// deserialize create request
-	var requestList *RequestList = new(RequestList)
+	var requestList *excel.RequestList = new(excel.RequestList)
 	if err := c.ShouldBindJSON(requestList); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -61,8 +61,11 @@ func create(c *gin.Context) {
 	// create excel
 	excelFile := excel.Create(requestList.Days)
 
-	// return result
-	c.JSON(200, excelFile)
+	// add file name
+	c.Header("file-name", fmt.Sprintf("Hours_Excel%[1]v.xlsx", requestList.GroupId))
+
+	// write result
+	excelFile.Write(c.Writer)
 }
 
 func generate(c *gin.Context) {
@@ -78,8 +81,4 @@ func generate(c *gin.Context) {
 
 	// return result
 	c.JSON(200, generatedWorkingDays)
-}
-
-type RequestList struct {
-	Days []*excel.Request `json:"days"`
 }

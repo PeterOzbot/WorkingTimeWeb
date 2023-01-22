@@ -1,7 +1,7 @@
 <template>
   <div class="calendar">
     <v-card class="calendar-month" elevation="3">
-      <MonthHeaderComponent :currentMonth="currentMonth" :currentYear="currentYear" @download="downloadExcel()" />
+      <MonthHeaderComponent :currentMonth="currentMonth" :currentYear="currentYear" @download="download()" />
       <WeekdaysComponent />
     </v-card>
     <v-card class="calendar-days" elevation="5">
@@ -29,11 +29,16 @@ const props = defineProps({
 });
 
 
-async function downloadExcel() {
+async function download() {
+  await downloadExcel("A");
+  await downloadExcel("B");
+}
+
+async function downloadExcel(groupId: string) {
   const createRequest = new CreateRequest();
-  createRequest.days = workingDays.value.filter(day => day.hours > 0);
+  createRequest.days = workingDays.value.filter(day => day.hours > 0 && day.groupId == groupId);
+  createRequest.groupId = groupId;
   const result = await apiClient.create(createRequest);
-  alert("count: " + createRequest.days.length + " result: " + result);
 }
 
 let workingDays = ref(new Array<EditableWorkingDay>());
@@ -52,7 +57,7 @@ function prepareCalendar() {
 function prepareGeneratedWorkingDays(generatedWorkingDays: WorkingDay[]): EditableWorkingDay[] {
   const days: EditableWorkingDay[] = [];
   for (let workingDay of generatedWorkingDays) {
-    days.push(new EditableWorkingDay(workingDay.date, workingDay.hours, false));
+    days.push(new EditableWorkingDay(workingDay.date, workingDay.hours, false, workingDay.groupId));
   }
 
   return days;
@@ -75,7 +80,7 @@ function getDaysInPreviousMonth(): EditableWorkingDay[] {
   // add days if there are any left
   while (previousMonthDays > 0) {
     // add day
-    days.push(new EditableWorkingDay(new Date(date), 0, true));
+    days.push(new EditableWorkingDay(new Date(date), 0, true, ""));
 
     // increment day
     date.setDate(date.getDate() + 1);
@@ -104,7 +109,7 @@ function getDaysInNextMonth(): EditableWorkingDay[] {
   // add days if there are any left
   while (nextMonthDays > 0) {
     // add day
-    days.push(new EditableWorkingDay(new Date(date), 0, true));
+    days.push(new EditableWorkingDay(new Date(date), 0, true, ""));
 
     // increment day
     date.setDate(date.getDate() + 1);

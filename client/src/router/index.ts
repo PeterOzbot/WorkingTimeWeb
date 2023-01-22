@@ -7,7 +7,7 @@ const router = createRouter({
   routes: [
     { path: "/", redirect: "/generator" },
     { path: "/generator", component: GeneratorInput },
-    { path: "/generator/:hours/:month/:year", component: Generator }
+    { path: "/generator/:a_hours/:b_hours/:month/:year", component: Generator }
   ],
 });
 

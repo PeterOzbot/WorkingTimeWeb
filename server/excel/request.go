@@ -8,3 +8,8 @@ type Request struct {
 	Hours   int       `json:"hours"`
 	GroupId string    `json:"groupId"`
 }
+
+type RequestList struct {
+	Days    []*Request `json:"days"`
+	GroupId string     `json:"groupId"`
+}

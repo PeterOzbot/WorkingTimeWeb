@@ -14,5 +14,5 @@ require (
 	github.com/okta/okta-jwt-verifier-golang v0.1.0
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rs/cors v1.7.0
-	github.com/stretchr/testify v1.7.0 // indirect
+	github.com/xuri/excelize/v2 v2.7.0 // indirect
 )

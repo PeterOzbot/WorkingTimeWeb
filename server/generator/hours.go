@@ -43,17 +43,22 @@ func reduce(inputHours []int, countDifference int) []int {
 	copy(hours[:], inputHours[:])
 
 	for countDifference > 0 {
+
 		// find two lowest hours and combine
-		var minIndex1 int = 0
-		var minIndex2 int = 0
 
-		for i, e := range hours {
-			if i == 0 || e < hours[minIndex1] {
-				minIndex1 = i
-			}
+		var firstIndex int = -1
+		var secondIndex int = -1
 
-			if (minIndex2 != minIndex1 && minIndex1 != i) && e < hours[minIndex2] {
-				minIndex2 = i
+		for index := 0; index < len(hours); index++ {
+
+			if firstIndex == -1 {
+				firstIndex = index
+			} else if firstIndex != -1 && secondIndex == -1 {
+				secondIndex = index
+			} else if hours[index] < hours[firstIndex] {
+				firstIndex = index
+			} else if secondIndex == -1 || hours[index] < hours[secondIndex] {
+				secondIndex = index
 			}
 		}
 
@@ -61,10 +66,10 @@ func reduce(inputHours []int, countDifference int) []int {
 		countDifference--
 
 		// combine the two minimal hours
-		hours[minIndex2] = hours[minIndex1] + hours[minIndex2]
+		hours[secondIndex] = hours[firstIndex] + hours[secondIndex]
 
 		// remove one of the combine hours
-		copy(hours[minIndex1:], hours[minIndex1+1:])
+		copy(hours[firstIndex:], hours[firstIndex+1:])
 		hours = hours[:len(hours)-1]
 	}
 
