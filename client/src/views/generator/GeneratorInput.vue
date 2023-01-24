@@ -7,10 +7,10 @@
           <div class="input-label">Year:</div>
         </div>
         <div class="column">
-          <InputComponent class="year-input" v-model="generatorRequest.year" />
+          <InputComponent class="year-input" v-model="year" />
         </div>
       </div>
-      <MonthSelectorComponent v-model="generatorRequest.month" />
+      <MonthSelectorComponent v-model="month" />
     </v-card>
 
     <v-card class="generate-button" @click="generate()" elevation="6">
@@ -24,27 +24,18 @@
 import InputComponent from "@/components/controls/HoursInput.vue";
 import MonthSelectorComponent from "@/components/input/MonthSelector.vue"
 import GroupHours from "@/components/input/GroupHours.vue"
-import type GeneratorRequest from "@/models/generatorRequest";
 import { useRouter } from "vue-router";
-import { onMounted, reactive, ref } from "vue";
-
-let generatorRequest: GeneratorRequest = {
-  a_hours: 0,
-  b_hours: 0,
-  month: 0,
-  year: new Date().getFullYear()
-};
+import { ref } from "vue";
 
 let hourGroups = ref(new Array<number>());
+let month = ref(0);
+let year = ref(new Date().getFullYear());
 
 const router = useRouter();
 
 function generate() {
-  generatorRequest.a_hours = hourGroups.value[0];
-  generatorRequest.b_hours = hourGroups.value[1];
-  router.push({ path: `/generator/${generatorRequest.a_hours}/${generatorRequest.b_hours}/${generatorRequest.month}/${generatorRequest.year}` })
+  router.push({ path: `/generator/${hourGroups.value[0]}/${hourGroups.value[1]}/${month.value}/${year.value}` })
 }
-
 
 </script>
 

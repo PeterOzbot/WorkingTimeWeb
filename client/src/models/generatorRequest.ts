@@ -1,6 +1,7 @@
+import type Group from "./group";
+
 export default class GeneratorRequest {
-  public a_hours = 0;
-  public b_hours = 0;
+  public groups: Group[] = [];
   public month = 1;
   public year = 2021;
 }

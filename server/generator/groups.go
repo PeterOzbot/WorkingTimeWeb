@@ -1,8 +1,10 @@
 package generator
 
-func splitDaysIntoGroups(days []*WorkingDay, a_hours int) []*WorkingDay {
+// Assigns days to groups.
+func splitDaysIntoGroups(days []*WorkingDay, groups []*Group) []*WorkingDay {
 
-	groupName := "A"
+	groupIndex := 0
+	groupHours := groups[groupIndex].Hours
 
 	for dayIndex := range days {
 
@@ -10,20 +12,23 @@ func splitDaysIntoGroups(days []*WorkingDay, a_hours int) []*WorkingDay {
 			continue
 		}
 
-		days[dayIndex].GroupId = groupName
+		days[dayIndex].GroupId = groups[groupIndex].GroupId
 
-		if a_hours != 0 {
+		if (groupHours - days[dayIndex].Hours) < 0 {
 
-			if (a_hours - days[dayIndex].Hours) < 0 {
+			remainingHours := days[dayIndex].Hours - groupHours
+			days[dayIndex].Hours = groupHours
 
-				remainingHours := days[dayIndex].Hours - a_hours
-				days[dayIndex].Hours = a_hours
+			days[dayIndex+1].Hours += remainingHours
 
-				days[dayIndex+1].Hours += remainingHours
-				groupName = "B"
-				a_hours = 0
-			} else {
-				a_hours -= days[dayIndex].Hours
+			groupIndex += 1
+			groupHours = groups[groupIndex].Hours
+
+		} else {
+			groupHours -= days[dayIndex].Hours
+			if groupHours == 0 && len(groups) > groupIndex+1 {
+				groupIndex += 1
+				groupHours = groups[groupIndex].Hours
 			}
 		}
 	}

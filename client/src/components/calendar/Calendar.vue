@@ -1,7 +1,7 @@
 <template>
   <div class="calendar">
     <v-card class="calendar-month" elevation="3">
-      <MonthHeaderComponent :currentMonth="currentMonth" :currentYear="currentYear" @download="download()" />
+      <MonthHeaderComponent :currentMonth="currentMonth" :currentYear="currentYear" @download="onDownload()" />
       <WeekdaysComponent />
     </v-card>
     <v-card class="calendar-days" elevation="5">
@@ -19,27 +19,17 @@ import DayComponent from "./Day.vue";
 import EditableWorkingDay from "@/models/editableWorkingDay";
 import { watch, ref } from "vue";
 import type WorkingDay from "@/models/workingDay";
-import apiClient from "@/services/apiClient";
-import CreateRequest from "@/models/createRequest";
+
+const emit = defineEmits(['download'])
+function onDownload() {
+  emit('download', workingDays.value);
+}
 
 const props = defineProps({
   generatedWorkingDays: { type: Array<WorkingDay>, required: true },
   currentMonth: { type: Number, required: true },
   currentYear: { type: Number, required: true },
 });
-
-
-async function download() {
-  await downloadExcel("A");
-  await downloadExcel("B");
-}
-
-async function downloadExcel(groupId: string) {
-  const createRequest = new CreateRequest();
-  createRequest.days = workingDays.value.filter(day => day.hours > 0 && day.groupId == groupId);
-  createRequest.groupId = groupId;
-  const result = await apiClient.create(createRequest);
-}
 
 let workingDays = ref(new Array<EditableWorkingDay>());
 

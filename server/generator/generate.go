@@ -15,7 +15,7 @@ func Generate(request *Request) []*WorkingDay {
 	choiceWeight := [10]int{0, 8, 8, 6, 4, 4, 4, 4, 1, 1}
 
 	// get hours
-	totalHours := request.A_Hours + request.B_Hours
+	totalHours := calculateTotalHours(request.Groups)
 	hours := generateHours(totalHours, choiceWeight)
 
 	// skip day chance
@@ -25,5 +25,13 @@ func Generate(request *Request) []*WorkingDay {
 	days := fillDays(hours, request.Year, time.Month(request.Month), skipDay)
 
 	// split into groups
-	return splitDaysIntoGroups(days, request.A_Hours)
+	return splitDaysIntoGroups(days, request.Groups)
+}
+
+func calculateTotalHours(groups []*Group) int {
+	totalHours := 0
+	for _, group := range groups {
+		totalHours += group.Hours
+	}
+	return totalHours
 }
