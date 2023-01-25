@@ -26,15 +26,16 @@ import MonthSelectorComponent from "@/components/input/MonthSelector.vue"
 import GroupHours from "@/components/input/GroupHours.vue"
 import { useRouter } from "vue-router";
 import { ref } from "vue";
+import type Group from "@/models/group";
 
-let hourGroups = ref(new Array<number>());
-let month = ref(0);
+let hourGroups = ref(new Array<Group>());
+let month = ref(1);
 let year = ref(new Date().getFullYear());
 
 const router = useRouter();
 
 function generate() {
-  router.push({ path: `/generator/${hourGroups.value[0]}/${hourGroups.value[1]}/${month.value}/${year.value}` })
+  router.push({ path: `/generator/${hourGroups.value[0].hours}/${hourGroups.value[1].hours}/${month.value}/${year.value}` })
 }
 
 </script>
@@ -82,6 +83,7 @@ function generate() {
     }
 
     .year-input {
+      margin-top: 18px;
       font-size: 30px;
       margin-left: 60px;
       margin-right: 60px;

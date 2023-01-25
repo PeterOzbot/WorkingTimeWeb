@@ -18,6 +18,8 @@ import Group from "@/models/group";
 const route = useRoute()
 
 let generatedWorkingDays = ref(new Array<WorkingDay>);
+
+
 let generatorRequest: GeneratorRequest = {
   groups: [new Group("A", +route.params.a_hours), new Group("B", +route.params.b_hours)],
   month: +route.params.month,

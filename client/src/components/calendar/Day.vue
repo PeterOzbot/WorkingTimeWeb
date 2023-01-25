@@ -5,11 +5,11 @@
         <InputComponent ref="inputElement" v-if="!day.isIrrelevantMonth" v-model="day.hours" after="h" />
       </div>
       <div class="day-footer">
-        <div class="day-number">
-          <span>{{ dayLabel() }}</span>
-        </div>
         <div class="day-group">
           <GroupInput v-if="!day.isIrrelevantMonth && day.hours > 0" v-model="day.groupId" />
+        </div>
+        <div class="day-number">
+          <span>{{ dayLabel() }}</span>
         </div>
       </div>
     </div>
@@ -65,6 +65,9 @@ function focusInputElement() {
   background-color: white;
 
   .day-hours {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
     flex: 1 0 auto;
     font-size: 20px;
   }
@@ -78,10 +81,11 @@ function focusInputElement() {
     padding-bottom: 5px;
     padding-right: 20px;
     padding-top: 5px;
+    display: flex;
   }
 
   .day-number {
-    flex: 0 0 auto;
+    flex: 1 0 auto;
     text-align: right;
 
     span {

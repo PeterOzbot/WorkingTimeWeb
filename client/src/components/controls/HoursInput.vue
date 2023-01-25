@@ -42,9 +42,8 @@ function selectAll(event: FocusEvent) {
 
 <style scoped lang="scss">
 .hours-input {
-  margin: 20px;
   border-bottom: solid 1px transparent;
-
+  align-content: center;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
