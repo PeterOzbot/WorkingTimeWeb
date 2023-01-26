@@ -44,9 +44,7 @@ function addGroup() {
 }
 
 .hours-container {
-    //flex: 0 0 auto;
     width: 100%;
-    //flex-wrap: wrap;
     display: flex;
     flex-flow: row;
 

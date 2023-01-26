@@ -27,15 +27,18 @@ import GroupHours from "@/components/input/GroupHours.vue"
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import type Group from "@/models/group";
+import { useGeneratorStore } from "@/stores/generator"
 
 let hourGroups = ref(new Array<Group>());
 let month = ref(1);
 let year = ref(new Date().getFullYear());
 
 const router = useRouter();
+const generatorStore = useGeneratorStore();
 
 function generate() {
-  router.push({ path: `/generator/${hourGroups.value[0].hours}/${hourGroups.value[1].hours}/${month.value}/${year.value}` })
+  generatorStore.setGroups(hourGroups.value)
+  router.push({ path: `/generator/${month.value}/${year.value}` })
 }
 
 </script>

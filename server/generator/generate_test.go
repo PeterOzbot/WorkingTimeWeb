@@ -17,3 +17,25 @@ func Test_TotalHours(t *testing.T) {
 		t.Errorf("Generated hours not the same as target hours.")
 	}
 }
+
+// Test_EmptyGroups : Tests if code does not fail when request has no groups.
+func Test_EmptyGroups(t *testing.T) {
+
+	request := &Request{Groups: []*Group{}}
+	result := Generate(request)
+
+	if len(result) != 0 {
+		t.Errorf("There should be no generated hours.")
+	}
+}
+
+// Test_NilGroups : Tests if code does not fail when request has no groups.
+func Test_NilGroups(t *testing.T) {
+
+	request := &Request{Groups: nil}
+	result := Generate(request)
+
+	if len(result) != 0 {
+		t.Errorf("There should be no generated hours.")
+	}
+}

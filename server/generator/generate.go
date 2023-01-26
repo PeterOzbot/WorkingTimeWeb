@@ -7,6 +7,9 @@ import (
 
 // Generate : Generates random sequence of working hours.
 func Generate(request *Request) []*WorkingDay {
+	if request.Groups == nil || len(request.Groups) == 0 {
+		return []*WorkingDay{}
+	}
 
 	// reinitialize the seed
 	rand.Seed(time.Now().UnixNano())

@@ -10,24 +10,28 @@ import CalendarComponent from "@/components/calendar/Calendar.vue";
 import { onMounted, reactive, ref } from "vue";
 import type WorkingDay from "@/models/workingDay";
 import type GeneratorRequest from "@/models/generatorRequest";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import CreateRequest from "@/models/createRequest";
 import type EditableWorkingDay from "@/models/editableWorkingDay";
-import Group from "@/models/group";
+import { useGeneratorStore } from "@/stores/generator"
 
-const route = useRoute()
+const route = useRoute();
+const router = useRouter();
+const generatorStore = useGeneratorStore();
 
 let generatedWorkingDays = ref(new Array<WorkingDay>);
 
-
 let generatorRequest: GeneratorRequest = {
-  groups: [new Group("A", +route.params.a_hours), new Group("B", +route.params.b_hours)],
+  groups: [...generatorStore.groups],
   month: +route.params.month,
   year: +route.params.year
 };
 
 onMounted(async () => {
   generatedWorkingDays.value = await apiClient.generate(generatorRequest);
+  if (generatedWorkingDays.value.length == 0) {
+    router.push({ path: `/generator` })
+  }
 });
 
 async function download(workingDays: EditableWorkingDay[]) {
