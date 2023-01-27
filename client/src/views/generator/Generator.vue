@@ -35,15 +35,13 @@ onMounted(async () => {
 });
 
 async function download(workingDays: EditableWorkingDay[]) {
-  await downloadExcel(workingDays, "A");
-  await downloadExcel(workingDays, "B");
-}
 
-async function downloadExcel(workingDays: EditableWorkingDay[], groupId: string) {
-  const createRequest = new CreateRequest();
-  createRequest.days = workingDays.filter(day => day.hours > 0 && day.groupId == groupId);
-  createRequest.groupId = groupId;
-  const result = await apiClient.create(createRequest);
+  for (const group of generatorRequest.groups) {
+    const groupWorkingDays = workingDays.filter(day => day.hours > 0 && day.groupId == group.groupId);
+
+    const createRequest = new CreateRequest(group.groupId, groupWorkingDays);
+    const result = await apiClient.create(createRequest);
+  }
 }
 
 </script>
